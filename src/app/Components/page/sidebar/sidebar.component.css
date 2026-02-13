@@ -39,6 +39,7 @@
   max-height: calc(100vh - 180px); /* Subtrai a altura do header e margens */
   scrollbar-width: thin;
   scrollbar-color: #b4872d #f8f9fa;
+  cursor: pointer;
 }
 
 .sidebar-nav::-webkit-scrollbar {

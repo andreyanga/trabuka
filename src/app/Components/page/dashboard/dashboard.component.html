@@ -1,8 +1,37 @@
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-container">
+  <div class="loading-spinner">
+    <div class="spinner-border text-[#b4872d]" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+    <p class="mt-3">Carregando dashboard...</p>
+  </div>
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="error-container">
+  <div class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    {{ errorMessage }}
+    <button class="btn btn-outline-danger btn-sm ms-3" (click)="carregarDashboard()">
+      <i class="bi bi-arrow-clockwise me-1"></i>Tentar Novamente
+    </button>
+  </div>
+</div>
+
   <!-- Dashboard Section -->
-<main class="main-content" *ngIf="tipoAcesso === 'estudante'">
+<main class="main-content" *ngIf="!loading && !error && dashboardData && user && user.tipoUsuario === 0">
+  <!-- Mock Data Indicator -->
+  <div *ngIf="usingMockData" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    <strong>Atenção:</strong> Usando dados de demonstração. A API não está disponível no momento.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  
     <section class="section" id="dashboard" data-aos="fade-up">
       <div class="container">
         <div class="row g-4">
+        <!-- Nível Atual -->
           <div class="col-lg-3 col-md-6">
             <div class="card">
               <div class="card-body">
@@ -10,15 +39,20 @@
                   <h4 class="card-title">Nível Atual</h4>
                   <i class="bi bi-trending-up text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">Praticante</p>
-                <span class="badge badge-praticante">Nível 2</span>
+              <p class="card-value text-[#b4872d]">{{ dashboardData.nivelNome }}</p>
+              <span class="badge badge-praticante">Nível {{ dashboardData.nivelAtual }}</span>
                 <div class="progress mt-3">
-                  <div class="progress-bar bg-[#b4872d]" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-[#b4872d]" role="progressbar" 
+                     [style.width.%]="dashboardData.progressoNivel" 
+                     [attr.aria-valuenow]="dashboardData.progressoNivel" 
+                     aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <p class="text-muted small mt-2">Progresso para Operacional</p>
+              <p class="text-muted small mt-2">Progresso para {{ dashboardData.proximoNivel }}</p>
               </div>
             </div>
           </div>
+
+        <!-- Projetos Feitos -->
           <div class="col-lg-3 col-md-6">
             <div class="card">
               <div class="card-body">
@@ -26,11 +60,13 @@
                   <h4 class="card-title">Projetos Feitos</h4>
                   <i class="bi bi-tools text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">2</p>
+              <p class="card-value text-[#b4872d]">{{ dashboardData.totalProjetos }}</p>
                 <a href="#projetos" class="card-link">Ver meus projetos</a>
               </div>
             </div>
           </div>
+
+        <!-- Vagas Aplicadas -->
           <div class="col-lg-3 col-md-6">
             <div class="card">
               <div class="card-body">
@@ -38,11 +74,13 @@
                   <h4 class="card-title">Vagas Aplicadas</h4>
                   <i class="bi bi-check2-square text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">5</p>
+              <p class="card-value text-[#b4872d]">{{ dashboardData.vagasAplicadas }}</p>
                 <a href="#vagas" class="card-link">Ver candidaturas</a>
               </div>
             </div>
           </div>
+
+        <!-- Ganhos Este Mês -->
           <div class="col-lg-3 col-md-6">
             <div class="card">
               <div class="card-body">
@@ -50,7 +88,7 @@
                   <h4 class="card-title">Ganhos Este Mês</h4>
                   <i class="bi bi-currency-dollar text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">Kz 35.000</p>
+              <p class="card-value text-[#b4872d]">{{ formatarMoeda(dashboardData.ganhosMesAtual) }}</p>
                 <a href="#ganhos" class="card-link">Ver histórico</a>
               </div>
             </div>
@@ -72,35 +110,40 @@
             </div>
             <div class="row">
               <div class="col-md-4 text-center">
-                <img src="../../../../assets/img/about.jpg" alt="Foto do Estudante" class="profile-img mb-3">
-                <h4 class="font-weight-bold">Andre Yanga</h4>
-                <p class="text-muted">andreyanga&#64;gmail.com</p>
-                <span class="badge badge-praticante">Nível Praticante</span>
+              <img [src]="getFotoPerfilUrl(dashboardData.fotoPerfil)" 
+                   alt="Foto do Estudante" class="profile-img mb-3">
+              <h4 class="font-weight-bold">{{ dashboardData.nome }}</h4>
+              <p class="text-muted">{{ dashboardData.email }}</p>
+              <span class="badge badge-praticante">Nível {{ dashboardData.nivelNome }}</span>
               </div>
               <div class="col-md-8">
                 <div class="mb-4">
                   <h5 class="text-muted">Sobre Mim</h5>
-                  <p>Estudante de Engenharia Informática apaixonado por desenvolvimento web front-end. Buscando oportunidades para aplicar meus conhecimentos em HTML, CSS, JavaScript e frameworks modernos.</p>
+                <p>{{ dashboardData.cv || 'Estudante apaixonado por tecnologia e desenvolvimento.' }}</p>
                 </div>
                 <div class="mb-4">
                   <h5 class="text-muted">Habilidades Principais</h5>
                   <div class="d-flex flex-wrap gap-2">
-                    <span class="badge bg-[#17495d] text-white">HTML5</span>
-                    <span class="badge bg-[#17495d] text-white">CSS3</span>
-                    <span class="badge bg-[#17495d] text-white">JavaScript</span>
-                    <span class="badge bg-[#17495d] text-white">React</span>
-                    <span class="badge bg-[#17495d] text-white">Figma</span>
+                  <span *ngFor="let habilidade of dashboardData.habilidadesLista" 
+                        class="badge bg-[#17495d] text-white">{{ habilidade }}</span>
                   </div>
                 </div>
                 <div class="mb-4">
                   <h5 class="text-muted">Currículo (CV)</h5>
-                  <a href="#" class="card-link"><i class="bi bi-file-earmark-text me-2"></i> meu_curriculo_atualizado.pdf</a>
+                <a href="#" class="card-link">
+                  <i class="bi bi-file-earmark-text me-2"></i> {{ dashboardData.cv || 'meu_curriculo_atualizado.pdf' }}
+                </a>
                 </div>
                 <div>
                   <h5 class="text-muted">Certificações</h5>
                   <ul class="list-unstyled">
-                    <li><i class="bi bi-check-circle me-2"></i> Certificação Front-End Developer - Plataforma X (2023)</li>
-                    <li><i class="bi bi-check-circle me-2"></i> UI/UX Design Fundamentos - Escola Y (2022)</li>
+                  <li *ngFor="let certificacao of dashboardData.certificacoes">
+                    <i class="bi bi-check-circle me-2"></i> 
+                    {{ certificacao.nome }} - {{ certificacao.ano }}
+                  </li>
+                  <li *ngIf="dashboardData.certificacoes.length === 0">
+                    <i class="bi bi-info-circle me-2"></i> Nenhuma certificação registrada
+                  </li>
                   </ul>
                 </div>
               </div>
@@ -115,53 +158,31 @@
       <div class="container">
         <h3 class="section-title mb-4">Vagas Recomendadas</h3>
         <div class="row g-4">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <div>
-                    <h4 class="card-title text-[#b4872d]">Estágio em Desenvolvimento Front-End</h4>
-                    <p class="text-muted small">Empresa Tech Solutions Inc. - Luanda</p>
+        <div class="col-12" *ngFor="let vaga of dashboardData.vagasRecomendadas">
+          <div class="vaga-card">
+            <div class="card-image" [style.background-image]="'url(' + getFotoPerfilUrl(vaga.imagemCapa) + ')'"></div>
+            <div class="card-content">
+              <h4 class="card-title text-[#b4872d]">{{ vaga.titulo }}</h4>
+              <p class="card-subtitle">{{ vaga.empresa }} - {{ vaga.localizacao }}</p>
+              <p class="card-description">{{ vaga.descricao }}</p>
+              <div class="skills-container">
+                <span *ngFor="let habilidade of vaga.habilidadesRequeridas" 
+                      class="skill-badge">{{ habilidade }}</span>
                   </div>
-                  <span class="text-muted small">Publicado há 2 dias</span>
-                </div>
-                <p class="card-text">
-                  Buscamos um estudante proativo para integrar nossa equipe de desenvolvimento. Oportunidade de aprendizado em projetos reais com React e Node.js.
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-flex gap-2">
-                    <span class="badge bg-[#17495d] text-white">HTML</span>
-                    <span class="badge bg-[#17495d] text-white">CSS</span>
-                    <span class="badge bg-[#17495d] text-white">JavaScript</span>
-                  </div>
+              <div class="card-footer">
+                <span class="time-badge">{{ vaga.tempoPublicacao }}</span>
                   <button class="btn btn-primary">Ver Detalhes</button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-12">
+        <div class="col-12" *ngIf="dashboardData.vagasRecomendadas.length === 0">
             <div class="card">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                  <div>
-                    <h4 class="card-title text-[#b4872d]">Trainee UI/UX Designer</h4>
-                    <p class="text-muted small">Agência Criativa Digital - Remoto</p>
+            <div class="card-body text-center">
+              <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+              <p class="text-muted mt-3">Nenhuma vaga recomendada no momento</p>
                   </div>
-                  <span class="text-muted small">Publicado há 5 dias</span>
                 </div>
-                <p class="card-text">
-                  Programa de trainee para jovens designers com paixão por interfaces intuitivas e experiência do usuário. Conhecimento em Figma é um diferencial.
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="d-flex gap-2">
-                    <span class="badge bg-[#17495d] text-white">Figma</span>
-                    <span class="badge bg-[#17495d] text-white">UI Design</span>
-                    <span class="badge bg-[#17495d] text-white">UX Research</span>
-                  </div>
-                  <button class="btn btn-primary">Ver Detalhes</button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="text-center mt-4">
@@ -176,7 +197,10 @@
         <div class="card">
           <div class="card-body">
             <h3 class="section-title mb-3">Testes de Habilidades</h3>
-            <p>Realize testes para validar suas competências e subir de nível. <a href="#" class="card-link">Ver testes disponíveis</a>.</p>
+          <p>Realize testes para validar suas competências e subir de nível. 
+             <strong>{{ dashboardData.testesRealizados }}</strong> testes já realizados.
+             <a href="#" class="card-link">Ver testes disponíveis</a>.
+          </p>
           </div>
         </div>
       </div>
@@ -188,7 +212,62 @@
         <div class="card">
           <div class="card-body">
             <h3 class="section-title mb-3">Meus Projetos</h3>
-            <p>Acompanhe seus projetos simulados e reais. <a href="#" class="card-link">Ver todos os projetos</a>.</p>
+          <div class="row g-4">
+            <div class="col-lg-6" *ngFor="let projeto of dashboardData.projetosRecentes">
+              <div class="project-card">
+                <div class="project-image" [style.background-image]="'url(' + getFotoPerfilUrl(projeto.imagemCapa) + ')'"></div>
+                <div class="project-content">
+                  <h5 class="project-title">{{ projeto.descricao }}</h5>
+                  <div class="project-meta">
+                    <span class="project-type">{{ projeto.tipo }}</span>
+                    <span class="project-value">{{ formatarMoeda(projeto.valor) }}</span>
+                  </div>
+                  <div class="project-status">
+                    <span class="badge" [ngClass]="getStatusClass(projeto.status)">
+                      {{ getStatusProjeto(projeto.status) }}
+                    </span>
+                    <small class="text-muted">{{ formatarData(projeto.dataConclusao) }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12" *ngIf="dashboardData.projetosRecentes.length === 0">
+              <p class="text-muted text-center">Nenhum projeto encontrado</p>
+            </div>
+          </div>
+          <a href="#" class="card-link mt-3">Ver todos os projetos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pagamentos Recentes Section -->
+  <section class="section" id="pagamentos" data-aos="fade-up">
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="section-title mb-3">Pagamentos Recentes</h3>
+          <div class="row g-3">
+            <div class="col-12" *ngFor="let pagamento of dashboardData.pagamentosRecentes">
+              <div class="payment-item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="text-[#b4872d]">{{ pagamento.empresa }}</h6>
+                    <p class="text-muted small mb-0">{{ formatarData(pagamento.data) }}</p>
+                  </div>
+                  <div class="text-end">
+                    <p class="text-[#b4872d] font-weight-bold mb-1">{{ formatarMoeda(pagamento.valor) }}</p>
+                    <span class="badge" [ngClass]="getStatusClass(pagamento.status)">
+                      {{ getStatusPagamento(pagamento.status) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12" *ngIf="dashboardData.pagamentosRecentes.length === 0">
+              <p class="text-muted text-center">Nenhum pagamento encontrado</p>
+            </div>
+          </div>
           </div>
         </div>
       </div>
@@ -201,7 +280,9 @@
           <div class="card-body">
             <h3 class="section-title mb-3">Fórum da Comunidade</h3>
             <p>Junte-se à nossa comunidade para tirar dúvidas, compartilhar conhecimentos e colaborar com outros estudantes e profissionais. Publique suas perguntas ou ajude a responder as dos outros!</p>
-            <a href="forum.html" class="btn btn-primary mt-3"><i class="bi bi-chat-square-text me-2"></i> Visitar o Fórum</a>
+          <a href="forum.html" class="btn btn-primary mt-3">
+            <i class="bi bi-chat-square-text me-2"></i> Visitar o Fórum
+          </a>
           </div>
         </div>
       </div>
@@ -210,7 +291,7 @@
 </main>
 
   <!-- Dashboard de outros tipos de acessos empresa -->
-<main class="main-content" *ngIf="tipoAcesso === 'empresa'">
+<main class="main-content" *ngIf="user && user.tipoUsuario === 1">
   <!-- Dashboard Section -->
     <section class="section" id="dashboard-empresa" data-aos="fade-up">
       <div class="container">
@@ -222,8 +303,8 @@
                   <h4 class="card-title">Vagas Ativas</h4>
                   <i class="bi bi-check2-square text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">3</p>
-                <a href="#vagas-publicadas" class="card-link">Gerenciar vagas</a>
+                <p class="card-value text-[#b4872d]">{{ vagasAtivas }}</p>
+                <a routerLink="meus-projetos" class="card-link">Gerenciar vagas</a>
               </div>
             </div>
           </div>
@@ -231,11 +312,11 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                  <h4 class="card-title">Novos Candidatos</h4>
-                  <i class="bi bi-person-plus text-[#b4872d]"></i>
+                  <h4 class="card-title">Total de Projetos</h4>
+                  <i class="bi bi-briefcase text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">12</p>
-                <a href="#candidatos" class="card-link">Ver candidatos</a>
+                <p class="card-value text-[#b4872d]">{{ projetosEmpresa.length }}</p>
+                <a routerLink="meus-projetos" class="card-link">Ver projetos</a>
               </div>
             </div>
           </div>
@@ -243,11 +324,11 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                  <h4 class="card-title">Entrevistas Agendadas</h4>
-                  <i class="bi bi-calendar-event text-[#b4872d]"></i>
+                  <h4 class="card-title">Projetos Pendentes</h4>
+                  <i class="bi bi-hourglass-split text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">4</p>
-                <a href="#" class="card-link">Ver agenda</a>
+                <p class="card-value text-[#b4872d]">{{ projetosPendentesEmpresa }}</p>
+                <a routerLink="meus-projetos" class="card-link">Ver pendentes</a>
               </div>
             </div>
           </div>
@@ -255,14 +336,11 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                  <h4 class="card-title">Taxa de Resposta</h4>
-                  <i class="bi bi-chat-left-text text-[#b4872d]"></i>
+                  <h4 class="card-title">Projetos Concluídos</h4>
+                  <i class="bi bi-check-circle text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">92%</p>
-                <div class="progress mt-3">
-                  <div class="progress-bar bg-[#b4872d]" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="text-muted small mt-2">Mantenha uma boa comunicação</p>
+                <p class="card-value text-[#b4872d]">{{ projetosConcluidosEmpresa }}</p>
+                <a routerLink="meus-projetos" class="card-link">Ver concluídos</a>
               </div>
             </div>
           </div>
@@ -283,27 +361,27 @@
             </div>
             <div class="row">
               <div class="col-md-4 text-center">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFeXAM721zy97fiQtKB0Z72a_MYgqzW5p16-QrmBJL2KGjvaP4IH6u1hEUIWO0w8dDmKMSrIGUgU-vQw-HvluOtWXauez0pBgNH86ZSA_LrdYg3mi8o2U-JQg0js_E32t0uIgEeR4r1Td59Kuz4MH3mZUKhk0UkJqefIOSbbY9dFvH__dXCBS6ji6gpQDG_4KyRECOLjYXRjWCTFo0lmlz2kgwyW2qeZ-Ehs2GZhEFEyHzHUyVvUttWQrlU9mcjd9iQPMh7yHoSVRk" alt="Logo da Empresa" class="profile-img mb-3">
-                <h4 class="font-weight-bold">[Nome da Empresa]</h4>
-                <p class="text-muted">[emailcorporativoempresa.com]</p>
+                <img [src]="getFotoPerfilUrl(empresaData?.logo || '')" alt="Logo da Empresa" class="profile-img mb-3">
+                <h4 class="font-weight-bold">{{ empresaData?.nome || user?.nome || 'Nome da Empresa' }}</h4>
+                <p class="text-muted">{{ empresaData?.email || user?.email || 'email@empresa.com' }}</p>
                 <span class="badge badge-verified">Empresa Verificada</span>
               </div>
               <div class="col-md-8">
                 <div class="mb-4">
                   <h5 class="text-muted">Sobre Nós</h5>
-                  <p>Somos uma empresa líder no setor de tecnologia, focada em soluções inovadoras de software. Estamos sempre em busca de novos talentos para integrar nossa equipe dinâmica e colaborativa.</p>
+                  <p>{{ empresaData?.descricao || 'Descrição da empresa não disponível.' }}</p>
                 </div>
                 <div class="mb-4">
                   <h5 class="text-muted">Setor de Atuação</h5>
-                  <p>Tecnologia da Informação e Software</p>
+                  <p>{{ empresaData?.setor || 'Não especificado' }}</p>
                 </div>
                 <div class="mb-4">
-                  <h5 class="text-muted">Website</h5>
-                  <a href="https://www.empresaexemplo.com" target="_blank" class="card-link"><i class="bi bi-globe me-2"></i> www.empresaexemplo.com</a>
+                  <h5 class="text-muted">Contato</h5>
+                  <p>{{ empresaData?.contato || 'Não disponível' }}</p>
                 </div>
                 <div>
-                  <h5 class="text-muted">Localização</h5>
-                  <p>Luanda, Angola</p>
+                  <h5 class="text-muted">Email</h5>
+                  <p>{{ empresaData?.email || user?.email || 'Não disponível' }}</p>
                 </div>
               </div>
             </div>
@@ -322,57 +400,44 @@
               <a href="#criar-vaga" class="btn btn-primary"><i class="bi bi-plus me-2"></i> Criar Nova Vaga</a>
             </div>
             <div class="row g-4">
-              <div class="col-12">
+              <div class="col-12" *ngFor="let projeto of projetosEmpresa">
                 <div class="border border-gray-200 p-4 rounded-lg">
                   <div class="d-flex justify-content-between align-items-start">
                     <div>
-                      <h4 class="card-title text-[#b4872d]">Desenvolvedor Full-Stack Pleno</h4>
-                      <p class="text-muted small">Remoto / Luanda</p>
+                      <h4 class="card-title text-[#b4872d]">{{ projeto.descricao }}</h4>
+                      <p class="text-muted small">{{ projeto.tipo }} - {{ formatarData(projeto.prazo) }}</p>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                      <span class="text-muted small">Publicado há 3 dias</span>
-                      <span class="badge bg-success text-white">Ativa</span>
+                      <span class="text-muted small">{{ formatarData(projeto.horario) }}</span>
+                      <span class="badge" [ngClass]="{
+                        'bg-success': projeto.status === 1,
+                        'bg-warning': projeto.status === 0,
+                        'bg-danger': projeto.status === 3
+                      }">
+                        {{ getStatusProjeto(projeto.status) }}
+                      </span>
                     </div>
                   </div>
                   <p class="card-text mt-2 mb-3">
-                    Procuramos um desenvolvedor Full-Stack experiente para trabalhar em projetos desafiadores utilizando Node.js e React.
+                    Orçamento: {{ formatarMoeda(projeto.oramento) }}
                   </p>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-2">
-                      <i class="bi bi-people text-muted"></i>
-                      <span class="text-muted small">15 candidatos</span>
+                      <i class="bi bi-calendar text-muted"></i>
+                      <span class="text-muted small">Prazo: {{ formatarData(projeto.prazo) }}</span>
                     </div>
                     <div class="d-flex gap-2">
-                      <button class="btn btn-secondary btn-sm">Ver Candidatos</button>
-                      <button class="btn btn-outline-primary btn-sm">Editar Vaga</button>
+                      <a routerLink="meus-projetos" class="btn btn-outline-primary btn-sm">Ver Detalhes</a>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-12">
-                <div class="border border-gray-200 p-4 rounded-lg">
-                  <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                      <h4 class="card-title text-[#b4872d]">Estágio em Marketing Digital</h4>
-                      <p class="text-muted small">Luanda - Presencial</p>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="text-muted small">Publicado há 10 dias</span>
-                      <span class="badge bg-danger text-white">Pausada</span>
-                    </div>
-                  </div>
-                  <p class="card-text mt-2 mb-3">
-                    Oportunidade para estudantes de Marketing aprenderem na prática sobre SEO, mídias sociais e campanhas online.
-                  </p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center gap-2">
-                      <i class="bi bi-people text-muted"></i>
-                      <span class="text-muted small">8 candidatos</span>
-                    </div>
-                    <div class="d-flex gap-2">
-                      <button class="btn btn-secondary btn-sm">Ver Candidatos</button>
-                      <button class="btn btn-outline-primary btn-sm">Editar Vaga</button>
-                    </div>
+              <div class="col-12" *ngIf="projetosEmpresa.length === 0">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                    <p class="text-muted mt-3">Nenhum projeto publicado ainda</p>
+                    <a routerLink="meus-projetos" class="btn btn-primary mt-2">Publicar Primeira Vaga</a>
                   </div>
                 </div>
               </div>
@@ -425,7 +490,7 @@
 
 <!-- Dashboard de outros tipos de administrador -->
 
-<main class="main-content" *ngIf="tipoAcesso === 'administrador'">
+<main class="main-content" *ngIf="user && user.tipoUsuario === 2">
    <!-- Admin Functionalities Section -->
     <section class="section" id="admin-functionalities" data-aos="fade-up">
       <div class="container">
@@ -671,10 +736,9 @@
 
 </main>
 
-
 <!-- Dashboard de outros tipos de acessos gestor -->
 
-<main class="main-content" *ngIf="tipoAcesso === 'gestor'">
+<main class="main-content" *ngIf="user && user.tipoUsuario === 2 && isGestor">
 
      <!-- Dashboard Section -->
     <section class="section" id="dashboard-admin" data-aos="fade-up">
@@ -687,8 +751,8 @@
                   <h4 class="card-title">Usuários Pendentes</h4>
                   <i class="bi bi-hourglass-split text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">15</p>
-                <a href="#user-management" class="card-link">Aprovar/Rejeitar</a>
+                <p class="card-value text-[#b4872d]">{{ gestorStats.usuariosPendentes }}</p>
+                <a href="#gestor-aprovacoes" class="card-link">Aprovar/Rejeitar</a>
               </div>
             </div>
           </div>
@@ -699,8 +763,8 @@
                   <h4 class="card-title">Projetos para Aprovar</h4>
                   <i class="bi bi-check2-square text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">8</p>
-                <a href="#project-management" class="card-link">Ver projetos</a>
+                <p class="card-value text-[#b4872d]">{{ gestorStats.projetosPendentes }}</p>
+                <a href="#gestor-aprovacoes" class="card-link">Ver projetos</a>
               </div>
             </div>
           </div>
@@ -708,11 +772,11 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                  <h4 class="card-title">Transações Pendentes</h4>
+                  <h4 class="card-title">Candidaturas Pendentes</h4>
                   <i class="bi bi-hourglass-bottom text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">2</p>
-                <a href="#payment-management" class="card-link">Validar transações</a>
+                <p class="card-value text-[#b4872d]">{{ candidaturasPendentes.length }}</p>
+                <a href="#gestor-aprovacoes" class="card-link">Ver candidaturas</a>
               </div>
             </div>
           </div>
@@ -723,7 +787,7 @@
                   <h4 class="card-title">Receita (Mês)</h4>
                   <i class="bi bi-graph-up text-[#b4872d]"></i>
                 </div>
-                <p class="card-value text-[#b4872d]">AOA 1.250.000</p>
+                <p class="card-value text-[#b4872d]">{{ formatarMoeda(gestorStats.receitaMes) }}</p>
                 <a href="#internal-reports" class="card-link">Ver relatório financeiro</a>
               </div>
             </div>
@@ -982,6 +1046,81 @@
       </div>
     </section>
 
+    <!-- Painel de Aprovações do Gestor -->
+    <section class="section" id="gestor-aprovacoes" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title mb-4">Painel de Aprovações</h2>
+
+        <!-- Estudantes Pendentes -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="section-title mb-3">Estudantes Pendentes para Aprovar</h3>
+            <div *ngIf="usuariosPendentes.length === 0" class="text-muted">Nenhum estudante pendente.</div>
+            <ul class="list-group" *ngIf="usuariosPendentes.length > 0">
+              <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let u of usuariosPendentes">
+                <span>{{ u.nome }} ({{ u.email }})</span>
+                <button class="btn btn-success btn-sm" (click)="aprovarUsuario(u.id || u.usuarioId)">
+                  Aprovar
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Vagas Pendentes -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="section-title mb-3">Vagas Pendentes para Aprovar</h3>
+            <div *ngIf="projetosPendentes.length === 0" class="text-muted">Nenhuma vaga pendente.</div>
+            <ul class="list-group" *ngIf="projetosPendentes.length > 0">
+              <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let p of projetosPendentes">
+                <span>{{ p.descricao }} - {{ p.tipo }}</span>
+                <button class="btn btn-success btn-sm" (click)="aprovarProjeto(p.id || p.projetoId)">
+                  Aprovar
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Candidaturas Pendentes -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="section-title mb-3">Candidaturas Pendentes</h3>
+            <div *ngIf="candidaturasPendentes.length === 0" class="text-muted">Nenhuma candidatura pendente.</div>
+            <ul class="list-group" *ngIf="candidaturasPendentes.length > 0">
+              <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let c of candidaturasPendentes">
+                <span>{{ c.nomeUsuario }} → {{ c.descricaoProjeto }}</span>
+                <button class="btn btn-success btn-sm" (click)="aprovarCandidatura(c.id)">
+                  Aprovar
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Relatórios Pendentes -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="section-title mb-3">Relatórios Pendentes</h3>
+            <div *ngIf="relatoriosPendentes.length === 0" class="text-muted">Nenhum relatório pendente.</div>
+            <ul class="list-group" *ngIf="relatoriosPendentes.length > 0">
+              <li class="list-group-item" *ngFor="let r of relatoriosPendentes">
+                <div>
+                  Relatório #{{ r.id }} - Projeto {{ r.projetoId }} - Estudante {{ r.usuarioId }}
+                </div>
+                <div class="mt-2 d-flex gap-2 align-items-center">
+                  <input #notaInput type="number" min="0" max="10" class="form-control form-control-sm" placeholder="Nota (0-10)">
+                  <input #feedbackInput type="text" class="form-control form-control-sm" placeholder="Feedback">
+                  <button class="btn btn-primary btn-sm" (click)="avaliarRelatorio(r, notaInput.value, feedbackInput.value)">Salvar</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Fórum Section -->
     <section class="section" id="forum" data-aos="fade-up">
       <div class="container">
@@ -999,7 +1138,7 @@
 
 <!-- Dashboard de outros tipos de acessos agente_suporte-->
 
-<main class="main-content" *ngIf="tipoAcesso === 'agente_suporte'">
+<main class="main-content" *ngIf="user && user.tipoUsuario === 3">
 
   <!-- Support Dashboard Section -->
     <section class="section" id="support-dashboard" data-aos="fade-up">

@@ -93,16 +93,6 @@
   font-weight: 500;
 }
 
-/* Profile Image */
-.profile-img {
-  width: 140px; /* Slightly larger for prominence */
-  height: 140px;
-  border-radius: 50%;
-  border: 4px solid #b4872d;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-
 /* Buttons */
 .btn-primary {
   background: #17495d;
@@ -130,12 +120,266 @@
   border-radius: 4px;
 }
 
-/* Footer */
-.footer-layout {
-  background: linear-gradient(135deg, #17495d, #2a6a84); /* Gradient for modern look */
-  color: #ffffff;
-  padding: 30px 20px;
-  margin-top: 30px;
+/* Profile Image */
+.profile-img {
+  width: 140px; /* Slightly larger for prominence */
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid #b4872d;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+/* Loading and Error States */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 2rem;
+}
+
+.loading-spinner {
+  text-align: center;
+}
+
+.loading-spinner .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: #b4872d;
+}
+
+.loading-spinner p {
+  margin-top: 1rem;
+  color: #6c757d;
+}
+
+.error-container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Status Classes */
+.status-pendente {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.status-concluido {
+  background-color: #28a745 !important;
+  color: #fff !important;
+}
+
+.status-cancelado {
+  background-color: #dc3545 !important;
+  color: #fff !important;
+}
+
+/* Project and Payment Items */
+.project-item, .payment-item {
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef !important;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.project-item:hover, .payment-item:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+/* Project Cards with Images */
+.project-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.project-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.project-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+}
+
+.project-content {
+  padding: 1.5rem;
+}
+
+.project-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #17495d;
+  margin-bottom: 0.5rem;
+}
+
+.project-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.project-type {
+  background: #b4872d;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.project-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.project-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+/* Vaga Cards with Images */
+.vaga-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.vaga-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.card-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.card-subtitle {
+  color: #b4872d;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.card-description {
+  color: #6c757d;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.skill-badge {
+  background: #17495d;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.time-badge {
+  background: #f8f9fa;
+  color: #6c757d;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+/* Alert Styles */
+.alert {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  color: #856404;
+  border-left: 4px solid #ffc107;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #6c757d;
+}
+
+.empty-state .empty-icon {
+  font-size: 4rem;
+  color: #dee2e6;
+  margin-bottom: 1rem;
+}
+
+.empty-state .empty-text {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 /* Responsive Adjustments */
@@ -150,11 +394,6 @@
 
   .section-title {
     font-size: 1.5rem;
-  }
-
-  .profile-img {
-    width: 100px;
-    height: 100px;
   }
 }
 
@@ -180,4 +419,61 @@
     flex-direction: column;
     gap: 15px;
   }
+  
+  .project-image,
+  .card-image {
+    height: 150px;
+  }
+  
+  .project-content,
+  .card-content {
+    padding: 1rem;
+  }
+}
+
+/* Custom Colors (nomes simples para evitar problemas de parsing) */
+.text-primary-trabuka {
+  color: #b4872d !important;
+}
+
+.bg-primary-trabuka {
+  background-color: #b4872d !important;
+}
+
+.bg-secondary-trabuka {
+  background-color: #17495d !important;
+}
+
+/* Ajuste para imagens de capa: mostrar imagem por completo, sem corte */
+.card-image, .project-image {
+  height: 200px;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  border-radius: 8px 8px 0 0;
+  background-color: #f8f9fa;
+}
+
+@media (max-width: 576px) {
+  .card-image, .project-image {
+    height: 120px;
+  }
+}
+
+/* Ajuste de largura da seção de vagas recomendadas */
+#vagas .container {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vaga-card {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Espaçamento entre cards de vagas */
+#vagas .row.g-4 {
+  row-gap: 2rem;
 }

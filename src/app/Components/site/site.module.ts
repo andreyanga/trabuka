@@ -12,9 +12,9 @@ import { ParaEmpresasComponent } from './para-empresas/para-empresas.component';
 import { ParaEstudantesComponent } from './para-estudantes/para-estudantes.component';
 import { ServicesComponent } from './services/services.component';
 import { InscricaoComponent } from './inscricao/inscricao.component';
-import { VagasComponent } from './vagas/vagas.component';
 import { BeneficiosComponent } from './beneficios/beneficios.component';
 import { FaqComponent } from './faq/faq.component';
+import { VagasComponent } from './vagas/vagas.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
@@ -27,10 +27,9 @@ import { SharedModule } from '../../shared/shared.module';
     ParaEstudantesComponent,
     ServicesComponent,
     InscricaoComponent,
-    VagasComponent,
     BeneficiosComponent,
     FaqComponent,
-
+    VagasComponent,
   ],
   imports: [
     CommonModule,

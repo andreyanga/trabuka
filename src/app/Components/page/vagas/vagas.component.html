@@ -1,1 +1,34 @@
-<p>vagas works!</p>
+<div class="vagas-container" *ngIf="!loading && !error">
+  <h2>Vagas recomendadas para você</h2>
+
+  <p *ngIf="vagasRecomendadas.length === 0">
+    Não há vagas recomendadas no momento. Complete um teste de habilidades ou atualize suas habilidades no perfil.
+  </p>
+
+  <div class="vaga-card" *ngFor="let vaga of vagasRecomendadas">
+    <h3>{{ vaga.titulo }}</h3>
+    <p class="empresa">{{ vaga.empresa }} - {{ vaga.localizacao }}</p>
+    <p class="descricao">{{ vaga.descricao }}</p>
+    <p class="habilidades" *ngIf="vaga.habilidadesRequeridas?.length">
+      <strong>Habilidades necessárias:</strong>
+      {{ vaga.habilidadesRequeridas.join(', ') }}
+    </p>
+    <p class="publicacao">{{ vaga.tempoPublicacao }}</p>
+
+    <!-- Botão de candidatura -->
+    <button
+      class="btn-candidatar"
+      (click)="candidatar(vaga)"
+      [disabled]="jaCandidatado(vaga)">
+      {{ jaCandidatado(vaga) ? 'Candidatura enviada' : 'Candidatar-se' }}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="loading">
+  Carregando vagas...
+</div>
+
+<div *ngIf="error">
+  {{ errorMessage }}
+</div>

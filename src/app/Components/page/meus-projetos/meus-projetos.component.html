@@ -1,1 +1,75 @@
-<p>meus-projetos works!</p>
+<div *ngIf="loading">
+  Carregando projetos...
+</div>
+
+<div *ngIf="error">
+  {{ errorMessage }}
+</div>
+
+<div class="meus-projetos-container" *ngIf="!loading && !error">
+  <h2>Meus Projetos</h2>
+
+  <!-- Formulário de publicação de vaga (empresa) -->
+  <div *ngIf="isEmpresa" class="nova-vaga-form" style="margin-bottom: 2rem; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px;">
+    <h3>Publicar nova vaga/projeto</h3>
+    <form (ngSubmit)="publicarVaga()">
+      <div style="margin-bottom: 1rem;">
+        <input
+          type="text"
+          [(ngModel)]="novaDescricao"
+          name="descricao"
+          placeholder="Descrição da vaga"
+          required
+          style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;"
+        />
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <select [(ngModel)]="novaTipo" name="tipo" style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+          <option value="Inicial">Inicial</option>
+          <option value="Intermediario">Intermediário</option>
+          <option value="Avancado">Avançado</option>
+          <option value="Master">Master</option>
+        </select>
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <input
+          type="number"
+          [(ngModel)]="novoOrcamento"
+          name="orcamento"
+          placeholder="Orçamento (Kz)"
+          style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;"
+        />
+      </div>
+      <div style="margin-bottom: 1rem;">
+        <input
+          type="date"
+          [(ngModel)]="novoPrazo"
+          name="prazo"
+          style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;"
+        />
+      </div>
+      <button type="submit" style="padding: 0.5rem 1rem; background-color: #b4872d; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Publicar (vai para aprovação do gestor)
+      </button>
+    </form>
+  </div>
+
+  <p *ngIf="projetos.length === 0">
+    Nenhum projeto encontrado.
+  </p>
+
+  <div class="projeto-card" *ngFor="let projeto of projetos">
+    <h3>{{ projeto.descricao || projeto.titulo }}</h3>
+    <p><strong>Tipo:</strong> {{ projeto.tipo }}</p>
+    <p><strong>Status:</strong> {{ projeto.status }}</p>
+    <p *ngIf="projeto.valor || projeto.oramento">
+      <strong>Orçamento:</strong> {{ (projeto.valor || projeto.oramento) | number:'1.0-0' }} Kz
+    </p>
+    <p *ngIf="projeto.dataInicio || projeto.horario">
+      <strong>Início:</strong> {{ (projeto.dataInicio || projeto.horario) | date:'shortDate' }}
+    </p>
+    <p *ngIf="projeto.dataConclusao || projeto.prazo">
+      <strong>Prazo:</strong> {{ (projeto.dataConclusao || projeto.prazo) | date:'shortDate' }}
+    </p>
+  </div>
+</div>

@@ -1,11 +1,10 @@
 <!-- header de outros tipos de acessos estudante-->
-
-<header class="header-layout" *ngIf="tipoAcesso === 'estudante'">
+<header class="header-layout" *ngIf="user && user.tipoUsuario === 0">
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        <h2 class="header-title">Bem-vindo de volta, André Yanga!</h2>
-        <p class="header-subtitle">Pronto para impulsionar sua carreira?</p>
+        <h2 class="header-title">{{ headerData?.saudacao || 'Bem-vindo de volta!' }}</h2>
+        <p class="header-subtitle">{{ headerData?.fraseMotivacional || 'Pronto para impulsionar sua carreira?' }}</p>
       </div>
       <div class="d-flex align-items-center gap-3">
         <div class="search-bar">
@@ -14,28 +13,28 @@
         </div>
         <button class="btn btn-icon position-relative" data-bs-toggle="tooltip" data-bs-title="Notificações">
           <i class="bi bi-bell"></i>
-          <span class="badge bg-[#b4872d] text-white">3</span>
+          <span class="badge bg-[#b4872d] text-white">{{ headerData?.notificacoesNaoLidas || 0 }}</span>
         </button>
         <button class="btn btn-icon position-relative" data-bs-toggle="tooltip" data-bs-title="Mensagens">
           <i class="bi bi-chat"></i>
-          <span class="badge bg-[#b4872d] text-white">5</span>
+          <span class="badge bg-[#b4872d] text-white">{{ headerData?.mensagensNaoLidas || 0 }}</span>
         </button>
         <button class="btn btn-icon position-relative" data-bs-toggle="tooltip" data-bs-title="Fórum">
           <i class="bi bi-chat-square-text"></i>
-          <span class="badge bg-[#b4872d] text-white">2</span>
+          <span class="badge bg-[#b4872d] text-white">{{ headerData?.forumNaoLidas || 0 }}</span>
         </button>
-        <img src="../../../../assets/img/about.jpg" alt="Foto do Estudante" class="user-photo" data-bs-toggle="tooltip" data-bs-title="Perfil do Usuário">
+        <img [src]="getFotoPerfilUrl(headerData?.fotoPerfil || '')" alt="Foto do Estudante" class="user-photo" data-bs-toggle="tooltip" data-bs-title="Perfil do Usuário">
       </div>
     </div>
   </div>
 </header>
 
 <!-- header de outros tipos de acessos empresa-->
-<header class="header-layout" *ngIf="tipoAcesso === 'empresa'">
+<header class="header-layout" *ngIf="user && user.tipoUsuario === 1">
   <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="header-title">Bem-vinda, [Nome da Empresa]!</h2>
+            <h2 class="header-title">Bem-vinda, {{ empresaData?.nome || user?.nome || 'Empresa' }}!</h2>
             <p class="header-subtitle">Gerencie suas vagas e encontre os melhores talentos.</p>
           </div>
           <div class="d-flex align-items-center gap-3">
@@ -45,25 +44,25 @@
             </div>
             <button class="btn btn-icon position-relative">
               <i class="bi bi-bell"></i>
-              <span class="badge bg-[#b4872d] text-white">2</span>
+              <span class="badge bg-[#b4872d] text-white" *ngIf="notificacoesNaoLidas > 0">{{ notificacoesNaoLidas }}</span>
             </button>
             <button class="btn btn-icon position-relative">
               <i class="bi bi-chat-square-text"></i>
-              <span class="badge bg-[#b4872d] text-white">2</span>
+              <span class="badge bg-[#b4872d] text-white" *ngIf="mensagensNaoLidas > 0">{{ mensagensNaoLidas }}</span>
             </button>
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtm9mnzN3Nx5NYGNO3T-sZLqD4KyhxlxCTDim4dMiIOHOQt20EodF_cFG5739AqFp2W54kKq9MqqlwTRPdZsCRnIwckmvXGCAhdbnBOs3YOBydJlcqRquALeBhX0gZ6dD5ZexvSc-WIAp20PSmF8azIy91-yCX7-yTiDKAE_ziy8X23rtxs85107CpVcAVPRXiVwJsGps49YEzXQXuzxx8DEy1M_ROlYka0-gTBj9g8ouQiUiasb6COgHzAUGiq-xG1zWNxeUh6RXE" alt="Logo da Empresa" class="user-photo">
+            <img [src]="getFotoPerfilUrl(user?.fotoPerfil || '')" [alt]="empresaData?.nome || 'Logo da Empresa'" class="user-photo">
           </div>
         </div>
       </div>
 </header>
 
 
-<!-- header de outros tipos de acessos administrador-->
-<header class="header-layout" *ngIf="tipoAcesso === 'administrador'">
+<!-- header de outros tipos de acessos administrador/gestor-->
+<header class="header-layout" *ngIf="user && user.tipoUsuario === 2">
   <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="header-title">Funcionalidades Administrativas</h2>
+            <h2 class="header-title">Bem-vindo, {{ user?.nome || 'Gestor' }}!</h2>
             <p class="header-subtitle">Configure e gerencie aspectos chave da plataforma.</p>
           </div>
           <div class="d-flex align-items-center gap-3">
@@ -73,41 +72,13 @@
             </div>
             <button class="btn btn-icon position-relative">
               <i class="bi bi-bell"></i>
-              <span class="badge bg-[#b4872d] text-white">3</span>
+              <span class="badge bg-[#b4872d] text-white" *ngIf="notificacoesNaoLidas > 0">{{ notificacoesNaoLidas }}</span>
             </button>
             <button class="btn btn-icon position-relative">
               <i class="bi bi-chat-square-text"></i>
-              <span class="badge bg-[#b4872d] text-white">2</span>
+              <span class="badge bg-[#b4872d] text-white" *ngIf="mensagensNaoLidas > 0">{{ mensagensNaoLidas }}</span>
             </button>
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQwm8qN2dAK4a-PYAWaefkNF3vln-8TaIvX41xduqq5F6FvPhg-7X6ryBmUL3uj2pnJk_4SvlLHDZiuQsGGQjGREqVlh89kq-YM7_5CUy86gQCr6vOzK8C4_bOGAQ_EHA1-E-ejGpTY_ayj0Q_528WG63GhXDHj0gG_QxAVZ4m3kKE_eDsP7rtIS-725Wiwz0w23c3d0N7byLb6g-GUtpvkKk9dEAMSu-q1TPY6BcMa2TlXeywlJKcLrwOJ8sU_aKagHOeTd4628r0" alt="Avatar do Administrador" class="user-photo">
-          </div>
-        </div>
-      </div>
-</header>
-
-
-<!-- header de outros tipos de acessos gestor-->
-<header class="header-layout" *ngIf="tipoAcesso === 'gestor'">
-  <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h2 class="header-title">Olá, Equipe Trabuka!</h2>
-            <p class="header-subtitle">Gerencie a plataforma e garanta a qualidade dos serviços.</p>
-          </div>
-          <div class="d-flex align-items-center gap-3">
-            <div class="search-bar">
-              <input type="text" class="form-control" placeholder="Pesquisar usuários ou projetos...">
-              <i class="bi bi-search search-icon"></i>
-            </div>
-            <button class="btn btn-icon position-relative">
-              <i class="bi bi-bell"></i>
-              <span class="badge bg-[#b4872d] text-white">5</span>
-            </button>
-            <button class="btn btn-icon position-relative">
-              <i class="bi bi-chat-square-text"></i>
-              <span class="badge bg-[#b4872d] text-white">2</span>
-            </button>
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQwm8qN2dAK4a-PYAWaefkNF3vln-8TaIvX41xduqq5F6FvPhg-7X6ryBmUL3uj2pnJk_4SvlLHDZiuQsGGQjGREqVlh89kq-YM7_5CUy86gQCr6vOzK8C4_bOGAQ_EHA1-E-ejGpTY_ayj0Q_528WG63GhXDHj0gG_QxAVZ4m3kKE_eDsP7rtIS-725Wiwz0w23c3d0N7byLb6g-GUtpvkKk9dEAMSu-q1TPY6BcMa2TlXeywlJKcLrwOJ8sU_aKagHOeTd4628r0" alt="Avatar do Administrador" class="user-photo">
+            <img [src]="getFotoPerfilUrl(user?.fotoPerfil || '')" [alt]="user?.nome || 'Avatar do Gestor'" class="user-photo">
           </div>
         </div>
       </div>
@@ -115,11 +86,11 @@
 
 
 <!-- header de outros tipos de acessos agente_suporte-->
-<header class="header-layout" *ngIf="tipoAcesso === 'agente_suporte'">
+<header class="header-layout" *ngIf="user && user.tipoUsuario === 3">
   <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center">
           <div>
-            <h2 class="header-title">Painel de Suporte Técnico</h2>
+            <h2 class="header-title">Bem-vindo, {{ user?.nome || 'Suporte' }}!</h2>
             <p class="header-subtitle">Gerencie tickets, monitore problemas e forneça assistência aos usuários.</p>
           </div>
           <div class="d-flex align-items-center gap-3">
@@ -129,13 +100,13 @@
             </div>
             <button class="btn btn-icon position-relative">
               <i class="bi bi-bell"></i>
-              <span class="badge bg-[#b4872d] text-white">5</span>
+              <span class="badge bg-[#b4872d] text-white" *ngIf="notificacoesNaoLidas > 0">{{ notificacoesNaoLidas }}</span>
             </button>
             <button class="btn btn-icon position-relative">
               <i class="bi bi-chat-square-text"></i>
-              <span class="badge bg-[#b4872d] text-white">2</span>
+              <span class="badge bg-[#b4872d] text-white" *ngIf="mensagensNaoLidas > 0">{{ mensagensNaoLidas }}</span>
             </button>
-            <img src="https://lh3.googleusercontent.com/a/ACg8ocJ0H8Y2_R10Z8P1Zz1v1Y6XZYvXQ5W7Z1vY5J6XG3Q=s96-c" alt="Avatar do Agente de Suporte" class="user-photo">
+            <img [src]="getFotoPerfilUrl(user?.fotoPerfil || '')" [alt]="user?.nome || 'Avatar do Suporte'" class="user-photo">
           </div>
         </div>
       </div>

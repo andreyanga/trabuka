@@ -16,31 +16,27 @@ import { SobreTrabukaComponent } from './Components/sobre-trabuka/sobre-trabuka.
 import { BlogueComponent } from './Components/blogue/blogue.component';
 import { HomeComponent } from './Components/home/home.component';
 
-
-
-
-
-@NgModule({ declarations: [
-        AppComponent,
-        LoginComponent,
-        RegisterComponent,
-        EncontrarEstagiosComponent,
-        BeneficiosParticiparComponent,
-        ParaEmpresasComponent,
-        SobreTrabukaComponent,
-        BlogueComponent,
-        HomeComponent,
-
-
-    ],
-    bootstrap: [AppComponent],
-    imports:[
-        BrowserModule,
-        FormsModule,
-        AppRoutingModule,
-        RouterModule,
-        SharedModule,
-        EncontrarEstagiosModule
-      ],
-      providers: [provideHttpClient(withInterceptorsFromDi())] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    EncontrarEstagiosComponent,
+    BeneficiosParticiparComponent,
+    ParaEmpresasComponent,
+    SobreTrabukaComponent,
+    BlogueComponent,
+    HomeComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    RouterModule,
+    SharedModule,
+    EncontrarEstagiosModule,
+    RegisterComponent, // ✅ IMPORTADO AQUI
+    LoginComponent
+  ],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
+  bootstrap: [AppComponent]
+})
 export class AppModule { }

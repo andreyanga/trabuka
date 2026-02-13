@@ -3,7 +3,7 @@
     <div class="container">
       <div class="cadastro-wrapper">
         <div class="cadastro-image">
-          <a href="index.html">
+          <a (click)="goToHome()">
             <img src="assets/img/cadastro.jpg" alt="Cadastro Trabuka" class="img-fluid">
           </a>
         </div>
@@ -18,16 +18,16 @@
             <div class="selection-section" *ngIf="!isFormVisible">
               <h2>Junte-se como Empresa, Estudante ou Profissional </h2>
               <div class="selection-options">
-                <div class="selection-card" (click)="selectRole('cliente')">
-                  <input type="radio" id="cliente" name="role" value="cliente" [checked]="role === 'cliente'">
-                  <label for="cliente">
+                <div class="selection-card" (click)="selectRole('empresa')">
+                  <input type="radio" id="empresa" name="role" value="empresa" [checked]="role === 'empresa'">
+                  <label for="empresa">
                     <i class="bi bi-person"></i>
                     <h4>Sou Empresa, contratando para um projeto</h4>
                   </label>
                 </div>
-                <div class="selection-card" (click)="selectRole('freelancer')">
-                  <input type="radio" id="freelancer" name="role" value="freelancer" [checked]="role === 'freelancer'">
-                  <label for="freelancer">
+                <div class="selection-card" (click)="selectRole('jovem')">
+                  <input type="radio" id="jovem" name="role" value="jovem" [checked]="role === 'jovem'">
+                  <label for="jovem">
                     <i class="bi bi-person-workspace"></i>
                     <h4>Sou Estudante ou Profissional, procurando trabalho</h4>
                   </label>
@@ -43,10 +43,10 @@
               <p class="subtitle">Ganhe experiência valiosa para o mercado de trabalho ao se cadastrar.</p>
 
               <div class="social-login">
-                <button class="btn-google" title="Cadastrar com Google">
+                <button type="button" class="btn-google" title="Cadastrar com Google">
                   <i class="bi bi-google"></i>
                 </button>
-                <button class="btn-linkedin" title="Cadastrar com LinkedIn">
+                <button type="button" class="btn-linkedin" title="Cadastrar com LinkedIn">
                   <i class="bi bi-linkedin"></i>
                 </button>
               </div>
@@ -55,35 +55,38 @@
                 <span>ou</span>
               </div>
 
-              <form class="cadastro-form">
+              <!-- form ligado ao método onSubmit() -->
+              <form class="cadastro-form" #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
                 <div class="form-group">
                   <label for="fullName">Nome completo *</label>
-                  <input type="text" id="fullName" placeholder="Seu nome completo" required>
+                  <input type="text" id="fullName" name="nome" [(ngModel)]="nome" required>
                 </div>
 
                 <div class="form-group">
                   <label for="email">E-mail *</label>
-                  <input type="email" id="email" placeholder="Seu e-mail" required>
+                  <input type="email" id="email" name="email" [(ngModel)]="email" required>
                 </div>
 
                 <div class="form-group">
                   <label for="phone">Número de telefone *</label>
                   <div class="input-group">
-                    <input type="tel" id="phone" placeholder="Seu número de telefone" required>
+                    <input type="tel" id="phone" name="telefone" [(ngModel)]="telefone" required>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label for="password">Senha *</label>
-                  <input type="password" id="password" placeholder="Sua senha" required>
+                  <input type="password" id="password" name="senha" [(ngModel)]="senha" required>
                 </div>
 
-                <div class="form-group">
-                  <label for="confirmPassword">Confirmar senha *</label>
-                  <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
+                <div class="form-group form-termos">
+                  <label class="termos-label">
+                    <input type="checkbox" name="concordaTermos" [(ngModel)]="concordaTermos" required>
+                    Eu concordo com os <a href="#" target="_blank">Termos de Serviço</a> e <a href="#" target="_blank">Política de Privacidade</a>
+                  </label>
                 </div>
 
-                <button type="submit" class="btn-cadastro">Cadastrar</button>
+                <button type="submit" class="btn-cadastro" [disabled]="!registerForm.form.valid">Cadastrar</button>
               </form>
 
               <p class="login-link">

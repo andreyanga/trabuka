@@ -6,8 +6,8 @@ const routes: Routes = [{
   path: '',
   component: SiteComponent,
   children: [
-
- ]
+    // (remover rota de lazy loading de vagas)
+  ]
 }];
 
 

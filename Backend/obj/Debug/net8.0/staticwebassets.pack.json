@@ -1,0 +1,53 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\portfolios\\08446568-deed-4a04-8836-521cb00d54da.jpeg",
+      "PackagePath": "staticwebassets\\assets\\images\\portfolios\\08446568-deed-4a04-8836-521cb00d54da.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\portfolios\\f3485142-3a94-4904-9349-4cd7a002b962.jpeg",
+      "PackagePath": "staticwebassets\\assets\\images\\portfolios\\f3485142-3a94-4904-9349-4cd7a002b962.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\projetos\\7c340d49-411c-41aa-bc7f-0113ac0e8958.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\projetos\\7c340d49-411c-41aa-bc7f-0113ac0e8958.jpg"
+    },
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\usuarios\\09f39422-7268-4f80-962f-1f62d249343a.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\usuarios\\09f39422-7268-4f80-962f-1f62d249343a.jpg"
+    },
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\usuarios\\1487a751-9d7b-48ca-b4d0-3ad9bdc29f8f.png",
+      "PackagePath": "staticwebassets\\assets\\images\\usuarios\\1487a751-9d7b-48ca-b4d0-3ad9bdc29f8f.png"
+    },
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\usuarios\\329d0a65-5de1-484e-8d2a-6147988de82d.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\usuarios\\329d0a65-5de1-484e-8d2a-6147988de82d.jpg"
+    },
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\usuarios\\5f0386dc-4778-4b9b-a12b-6f557b4e7a77.png",
+      "PackagePath": "staticwebassets\\assets\\images\\usuarios\\5f0386dc-4778-4b9b-a12b-6f557b4e7a77.png"
+    },
+    {
+      "Id": "C:\\Users\\PC\\Desktop\\TrabukaFront\\trabuka\\Backend\\wwwroot\\assets\\images\\usuarios\\829ef630-526f-4643-bca2-fdb0dc52d844.png",
+      "PackagePath": "staticwebassets\\assets\\images\\usuarios\\829ef630-526f-4643-bca2-fdb0dc52d844.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TrabukaApi.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.TrabukaApi.props",
+      "PackagePath": "build\\TrabukaApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.TrabukaApi.props",
+      "PackagePath": "buildMultiTargeting\\TrabukaApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.TrabukaApi.props",
+      "PackagePath": "buildTransitive\\TrabukaApi.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

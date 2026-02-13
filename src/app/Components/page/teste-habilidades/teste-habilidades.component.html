@@ -1,1 +1,342 @@
-<p>teste-habilidades works!</p>
+<div class="container mt-4 mb-5">
+  <!-- LISTA DE TESTES DISPONÍVEIS -->
+  <div *ngIf="estado === 'lista'" class="testes-lista">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h2 class="text-center mb-4">
+          <i class="bi bi-clipboard-check me-2"></i>
+          Testes de Habilidades
+        </h2>
+        <p class="text-center text-muted">
+          Escolha um teste para avaliar suas habilidades e progredir na plataforma
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="carregando" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!carregando && testesDisponiveis.length === 0" class="alert alert-info text-center">
+      <i class="bi bi-info-circle me-2"></i>
+      Não há testes disponíveis no momento.
+    </div>
+
+    <div class="row g-4" *ngIf="!carregando && testesDisponiveis.length > 0">
+      <div class="col-md-6 col-lg-4" *ngFor="let teste of testesDisponiveis">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body d-flex flex-column">
+            <div class="mb-3">
+              <span class="badge bg-primary mb-2">
+                {{ getDificuldadeNome(teste.dificuldade) }}
+              </span>
+              <h5 class="card-title">{{ teste.nome }}</h5>
+              <p class="card-text text-muted small">{{ teste.descricao }}</p>
+            </div>
+            
+            <div class="mt-auto">
+              <div class="mb-3">
+                <small class="text-muted d-block">
+                  <i class="bi bi-question-circle me-1"></i>
+                  {{ teste.totalQuestoes }} questões
+                </small>
+                <small class="text-muted d-block">
+                  <i class="bi bi-clock me-1"></i>
+                  {{ teste.tempoLimiteMinutos }} minutos
+                </small>
+                <small class="text-muted d-block">
+                  <i class="bi bi-trophy me-1"></i>
+                  Mínimo: {{ teste.pontuacaoMinima }}/{{ teste.pontuacaoMaxima }}
+                </small>
+              </div>
+              <button 
+                class="btn btn-primary w-100" 
+                (click)="verInstrucoes(teste)"
+                [disabled]="carregando">
+                <i class="bi bi-play-circle me-2"></i>
+                Iniciar Teste
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA DE INSTRUÇÕES -->
+  <div *ngIf="estado === 'instrucoes' && testeAtual" class="instrucoes-teste">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+              <i class="bi bi-info-circle me-2"></i>
+              Instruções do Teste
+            </h4>
+          </div>
+          <div class="card-body">
+            <h5 class="mb-3">{{ testeAtual.nome }}</h5>
+            <p class="mb-4">{{ testeAtual.descricao }}</p>
+
+            <div class="alert alert-warning">
+              <h6><i class="bi bi-exclamation-triangle me-2"></i>Importante:</h6>
+              <ul class="mb-0">
+                <li>O teste tem duração de <strong>{{ testeAtual.tempoLimiteMinutos }} minutos</strong></li>
+                <li>Total de <strong>{{ testeAtual.questoes.length }} questões</strong></li>
+                <li>Pontuação mínima para aprovação: <strong>{{ testeAtual.pontuacaoMinima }}/{{ testeAtual.pontuacaoMaxima }}</strong></li>
+                <li>Você pode navegar entre as questões antes de finalizar</li>
+                <li>Após finalizar, não será possível alterar as respostas</li>
+              </ul>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end">
+              <button class="btn btn-secondary" (click)="voltarParaLista()">
+                <i class="bi bi-arrow-left me-2"></i>
+                Voltar
+              </button>
+              <button class="btn btn-primary" (click)="iniciarTeste()">
+                <i class="bi bi-play-circle me-2"></i>
+                Começar Teste
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA DO QUIZ EM PROGRESSO -->
+  <div *ngIf="estado === 'em_progresso' && testeAtual" class="quiz-em-progresso">
+    <div class="row">
+      <div class="col-12">
+        <!-- Header com timer e progresso -->
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <h5 class="mb-0">{{ testeAtual.nome }}</h5>
+                <small class="text-muted">Questão {{ questaoAtual + 1 }} de {{ getTotalQuestoes() }}</small>
+              </div>
+              <div class="col-md-6 text-end">
+                <div class="d-flex align-items-center justify-content-end gap-3">
+                  <div>
+                    <i class="bi bi-clock text-danger me-1"></i>
+                    <strong class="text-danger" [class.text-warning]="tempoRestante <= 300">
+                      {{ tempoFormatado }}
+                    </strong>
+                  </div>
+                  <div>
+                    <small class="text-muted">
+                      {{ getQuestoesRespondidas() }}/{{ getTotalQuestoes() }} respondidas
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Barra de progresso -->
+            <div class="progress mt-3" style="height: 8px;">
+              <div 
+                class="progress-bar" 
+                [style.width.%]="(getQuestoesRespondidas() / getTotalQuestoes()) * 100"
+                role="progressbar">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Questão atual -->
+        <div class="card shadow mb-3" *ngIf="getQuestaoAtual()">
+          <div class="card-body">
+            <h5 class="card-title mb-4">
+              <span class="badge bg-primary me-2">{{ questaoAtual + 1 }}</span>
+              {{ getQuestaoAtual()!.enunciado }}
+            </h5>
+
+            <div class="opcoes-resposta">
+              <div 
+                class="opcao-resposta mb-3 p-3 border rounded"
+                [class.bg-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'A'"
+                [class.text-white]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'A'"
+                [class.border-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'A'"
+                (click)="selecionarResposta(getQuestaoAtual()!.questaoId, 'A')"
+                style="cursor: pointer;">
+                <strong>A)</strong> {{ getQuestaoAtual()!.opcaoA }}
+              </div>
+              <div 
+                class="opcao-resposta mb-3 p-3 border rounded"
+                [class.bg-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'B'"
+                [class.text-white]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'B'"
+                [class.border-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'B'"
+                (click)="selecionarResposta(getQuestaoAtual()!.questaoId, 'B')"
+                style="cursor: pointer;">
+                <strong>B)</strong> {{ getQuestaoAtual()!.opcaoB }}
+              </div>
+              <div 
+                class="opcao-resposta mb-3 p-3 border rounded"
+                [class.bg-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'C'"
+                [class.text-white]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'C'"
+                [class.border-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'C'"
+                (click)="selecionarResposta(getQuestaoAtual()!.questaoId, 'C')"
+                style="cursor: pointer;">
+                <strong>C)</strong> {{ getQuestaoAtual()!.opcaoC }}
+              </div>
+              <div 
+                class="opcao-resposta mb-3 p-3 border rounded"
+                [class.bg-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'D'"
+                [class.text-white]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'D'"
+                [class.border-primary]="getRespostaSelecionada(getQuestaoAtual()!.questaoId) === 'D'"
+                (click)="selecionarResposta(getQuestaoAtual()!.questaoId, 'D')"
+                style="cursor: pointer;">
+                <strong>D)</strong> {{ getQuestaoAtual()!.opcaoD }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navegação entre questões -->
+        <div class="card shadow mb-3">
+          <div class="card-body">
+            <h6 class="mb-3">Navegação Rápida:</h6>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button 
+                *ngFor="let questao of testeAtual.questoes; let i = index"
+                class="btn btn-sm"
+                [class.btn-primary]="i === questaoAtual"
+                [class.btn-outline-primary]="i !== questaoAtual"
+                [class.btn-success]="respostas.has(questao.questaoId) && i !== questaoAtual"
+                (click)="irParaQuestao(i)">
+                {{ i + 1 }}
+              </button>
+            </div>
+            <div class="d-flex gap-2">
+              <button 
+                class="btn btn-secondary" 
+                (click)="questaoAnterior()"
+                [disabled]="questaoAtual === 0">
+                <i class="bi bi-arrow-left me-2"></i>
+                Anterior
+              </button>
+              <button 
+                class="btn btn-secondary ms-auto" 
+                (click)="proximaQuestao()"
+                [disabled]="questaoAtual === getTotalQuestoes() - 1">
+                Próxima
+                <i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão finalizar -->
+        <div class="text-center">
+          <button 
+            class="btn btn-success btn-lg"
+            (click)="finalizarTeste()"
+            [disabled]="carregando">
+            <i class="bi bi-check-circle me-2"></i>
+            {{ carregando ? 'Enviando...' : 'Finalizar Teste' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TELA DE RESULTADO -->
+  <div *ngIf="estado === 'resultado' && resultado" class="resultado-teste">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card shadow">
+          <div class="card-header" [class.bg-success]="resultado.aprovado" [class.bg-danger]="!resultado.aprovado" [class.text-white]="true">
+            <h4 class="mb-0 text-center">
+              <i [class.bi-check-circle]="resultado.aprovado" [class.bi-x-circle]="!resultado.aprovado" class="me-2"></i>
+              {{ resultado.aprovado ? 'Parabéns! Você foi aprovado!' : 'Você não atingiu a pontuação mínima' }}
+            </h4>
+          </div>
+          <div class="card-body">
+            <!-- Resumo do resultado -->
+            <div class="row mb-4">
+              <div class="col-md-4 text-center mb-3">
+                <div class="p-3 bg-light rounded">
+                  <h3 class="text-primary mb-0">{{ resultado.pontuacaoObtida }}</h3>
+                  <small class="text-muted">Pontos Obtidos</small>
+                </div>
+              </div>
+              <div class="col-md-4 text-center mb-3">
+                <div class="p-3 bg-light rounded">
+                  <h3 class="text-info mb-0">{{ resultado.pontuacaoMaxima }}</h3>
+                  <small class="text-muted">Pontuação Máxima</small>
+                </div>
+              </div>
+              <div class="col-md-4 text-center mb-3">
+                <div class="p-3 bg-light rounded">
+                  <h3 class="mb-0" [class.text-success]="resultado.aprovado" [class.text-danger]="!resultado.aprovado">
+                    {{ ((resultado.pontuacaoObtida / resultado.pontuacaoMaxima) * 100).toFixed(1) }}%
+                  </h3>
+                  <small class="text-muted">Percentual</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nível atribuído -->
+            <div *ngIf="resultado.aprovado && resultado.nivelAtribuido" class="alert alert-info text-center">
+              <h5>
+                <i class="bi bi-trophy me-2"></i>
+                Nível Atribuído: {{ getNivelNome(resultado.nivelAtribuido) }}
+              </h5>
+            </div>
+
+            <!-- Detalhes das respostas -->
+            <h5 class="mt-4 mb-3">Detalhes das Respostas:</h5>
+            <div class="accordion" id="accordionRespostas">
+              <div *ngFor="let resposta of resultado.respostasDetalhadas; let i = index" class="accordion-item">
+                <h2 class="accordion-header">
+                  <button 
+                    class="accordion-button"
+                    [class.collapsed]="i !== 0"
+                    type="button"
+                    [attr.data-bs-target]="'#resposta' + i"
+                    [attr.aria-expanded]="i === 0 ? 'true' : 'false'">
+                    <span class="me-2">
+                      <i [class.bi-check-circle-fill]="resposta.acertou" 
+                         [class.bi-x-circle-fill]="!resposta.acertou"
+                         [class.text-success]="resposta.acertou"
+                         [class.text-danger]="!resposta.acertou"></i>
+                    </span>
+                    Questão {{ i + 1 }}: {{ resposta.enunciado.substring(0, 50) }}...
+                  </button>
+                </h2>
+                <div 
+                  [id]="'resposta' + i"
+                  class="accordion-collapse collapse"
+                  [class.show]="i === 0">
+                  <div class="accordion-body">
+                    <p><strong>Enunciado:</strong> {{ resposta.enunciado }}</p>
+                    <p [class.text-danger]="!resposta.acertou" [class.text-success]="resposta.acertou">
+                      <strong>Sua resposta:</strong> {{ resposta.respostaEscolhida || 'Não respondida' }}
+                    </p>
+                    <p class="text-success">
+                      <strong>Resposta correta:</strong> {{ resposta.respostaCorreta }}
+                    </p>
+                    <p>
+                      <strong>Pontuação:</strong> {{ resposta.pontuacaoObtida }} pontos
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botões de ação -->
+            <div class="text-center mt-4">
+              <button class="btn btn-primary me-2" (click)="voltarParaLista()">
+                <i class="bi bi-arrow-left me-2"></i>
+                Voltar para Testes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

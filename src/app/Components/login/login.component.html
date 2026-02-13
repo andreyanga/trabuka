@@ -34,12 +34,12 @@
             </div>
 
             <!-- Formulário de Login -->
-            <form class="login-form">
+            <form class="login-form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
               <div class="form-group">
                 <label for="email">E-mail</label>
                 <div class="input-group">
                   <i class="bi bi-envelope"></i>
-                  <input type="email" id="email" placeholder="Seu e-mail" required>
+                  <input type="email" id="email" [(ngModel)]="email" name="email" placeholder="Seu e-mail" required>
                 </div>
               </div>
 
@@ -47,7 +47,7 @@
                 <label for="password">Senha</label>
                 <div class="input-group">
                   <i class="bi bi-lock"></i>
-                  <input type="password" id="password" placeholder="Sua senha" required>
+                  <input type="password" id="password" [(ngModel)]="senha" name="senha" placeholder="Sua senha" required>
                   <i class="bi bi-eye-slash toggle-password"></i>
                 </div>
               </div>

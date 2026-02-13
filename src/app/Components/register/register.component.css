@@ -1,136 +1,196 @@
-/*--------------------------------------------------------------
-# Cadastro Section
---------------------------------------------------------------*/
+/* Seção principal do cadastro */
 .cadastro-section {
-  padding: 40px 0;
   min-height: 100vh;
+  padding: 0;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
+/* Container do cadastro */
 .container {
-  max-width: 1200px;
+  max-width: 950px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 16px;
 }
 
+/* Wrapper do cadastro com sombra e borda suave */
 .cadastro-wrapper {
   display: flex;
   align-items: stretch;
-  background: #ffffff;
-  border-radius: 30px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 10px 32px rgba(0,0,0,0.10);
   overflow: hidden;
+  min-height: 520px;
 }
 
+/* Sombra e elevação do wrapper */
+.cadastro-wrapper {
+  box-shadow: 0 8px 32px rgba(23, 73, 93, 0.10), 0 1.5px 8px rgba(180, 135, 45, 0.06);
+  border-radius: 28px;
+  background: #fff;
+}
+
+/* Imagem valorizada */
 .cadastro-image {
   flex: 0 0 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f6fa;
   position: relative;
-  overflow: hidden;
 }
-
 .cadastro-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 30px 0 0 30px;
+  border-radius: 24px 0 24px 0;
+  min-height: 520px;
+  max-height: 750px;
 }
 
+/* Formulário centralizado e compacto */
 .cadastro-container {
   flex: 0 0 55%;
-  padding: 40px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
 }
-
+/* Cartão do formulário com leve elevação */
 .cadastro-box {
   width: 100%;
-  max-width: 420px;
+  max-width: 370px;
   margin: 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(23, 73, 93, 0.06);
+  padding: 24px 18px 18px 18px;
 }
 
-/* Logo */
+/* Logo e títulos */
 .cadastro-logo {
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.cadastro-logo img {
-  max-width: 160px;
-  cursor: pointer;
-}
-
-/* Títulos */
-.cadastro-box h2 {
-  color: #17495d;
-  font-size: 32px;
   margin-bottom: 10px;
   text-align: center;
 }
-
+.cadastro-logo img {
+  max-width: 120px;
+}
+.cadastro-box h2 {
+  color: #17495d;
+  font-size: 25px;
+  margin-bottom: 4px;
+  text-align: center;
+}
 .cadastro-box .subtitle {
-  font-size: 16px;
+  font-size: 14px;
   color: #6c757d;
-  margin-bottom: 35px;
+  margin-bottom: 14px;
   text-align: center;
 }
 
-/* Seção Inicial de Escolha */
-.selection-section {
-  text-align: center;
-}
-
-.selection-options {
+/* Botões sociais */
+.social-login {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: 18px;
+  margin: 12px 0 8px 0;
 }
-
-.selection-card {
-  background: #ffffff;
-  border: 2px solid #e9ecef;
-  border-radius: 10px;
-  padding: 10px;
-  width: 200px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.selection-card:hover {
-  border-color: #b4872d;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.selection-card h4 {
-  font-size: 20px;
-  text-align: left;
-}
-
-.selection-card input {
-  display: none;
-}
-
-.selection-card label {
+.social-login button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: #f8f9fa;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.social-login button:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+}
+.social-login button i {
+  font-size: 22px;
+  color: #17495d;
 }
 
-.selection-card label i {
-  font-size: 24px;
+/* Divider estilizado */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 10px 0 8px 0;
+  width: 100%;
+}
+.divider span {
+  color: #b4872d;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 0 16px;
+  letter-spacing: 1px;
+  background: #fff;
+  z-index: 1;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1.5px solid #e9ecef;
+  margin: 0 4px;
+  z-index: 0;
+}
+
+/* Inputs e formulário */
+/* Inputs padrão */
+.form-group {
+  margin-bottom: 10px;
+  position: static;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: none;
+  color: #17495d;
+  transition: border 0.2s;
+  outline: none;
+  font-weight: 400;
+}
+.form-group input:focus {
+  border: 2px solid #b4872d;
+  background: #fff;
+  box-shadow: none;
+}
+.form-group input::placeholder {
   color: #6c757d;
+  opacity: 1;
+  font-size: 15px;
+  font-style: normal;
+}
+.form-group label {
+  position: static;
+  left: auto;
+  top: auto;
+  color: #17495d;
+  font-size: 15px;
+  font-weight: 600;
+  background: transparent;
+  transition: none;
+  z-index: auto;
+  pointer-events: auto;
+  padding: 0;
+  border-radius: 0;
 }
 
-.selection-card input:checked + label {
-  color: #b4872d;
-}
-
-.selection-card input:checked + label i {
-  color: #b4872d;
-}
-
+/* Botão 'Criar uma conta' padrão */
 .btn-next {
   background: #b4872d;
   color: #ffffff;
@@ -140,177 +200,274 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 16px;
+  margin-top: 10px;
+  box-shadow: none;
+  letter-spacing: normal;
+  position: static;
+  overflow: visible;
 }
-
 .btn-next:hover {
+  background: #a0761f;
+  box-shadow: 0 8px 20px rgba(180, 135, 45, 0.18);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(180, 135, 45, 0.3);
+  filter: none;
 }
-
 .btn-next:disabled {
   background: #e9ecef;
   cursor: not-allowed;
 }
 
-/* Social Login */
-.social-login {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 30px 0;
-}
-
-.social-login button {
-  width: 50px;
-  height: 50px;
+/* Ajuste para input-group (telefone) */
+.input-group {
   border: none;
-  border-radius: 50%;
-  background: #f8f9fa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 0;
 }
-
-.social-login button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.social-login button i {
-  font-size: 24px;
+.input-group input {
+  border: 1.5px solid #e2b95a;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.7);
+  box-shadow: 0 2px 12px rgba(180,135,45,0.06);
+  padding: 18px 16px 18px 44px;
+  font-size: 16px;
   color: #17495d;
+  font-weight: 500;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
 }
-
-/* Divider */
-.divider {
-  text-align: center;
-  margin: 30px 0;
-  position: relative;
+.input-group input:focus {
+  border: 2px solid #b4872d;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 0 0 3px #f7ecd1, 0 2px 12px rgba(180,135,45,0.10);
 }
-
-.divider span {
-  background: #ffffff;
-  padding: 0 10px;
-  position: relative;
-  z-index: 1;
-}
-
-.divider::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: #e9ecef;
-  z-index: 0;
-}
-
-/* Form */
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
+.input-group input::placeholder {
+  color: #b4872d;
+  opacity: 0.7;
   font-size: 15px;
-  font-weight: 600;
-  color: #17495d;
-  margin-bottom: 10px;
+  font-style: italic;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #e9ecef;
-  border-radius: 15px;
-  font-size: 15px;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #b4872d;
-}
-
-/* Cadastro Button */
-.btn-cadastro {
-  width: 100%;
-  padding: 12px;
-  background: #b4872d;
-  color: #ffffff;
-  border: none;
-  border-radius: 15px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-cadastro:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(180, 135, 45, 0.3);
-}
-
-/* Login Link */
+/* Link de login */
 .login-link {
-  margin-top: 30px;
-  font-size: 15px;
+  margin-top: 10px;
+  font-size: 13px;
   text-align: center;
   cursor: pointer;
 }
-
 .login-link a {
   color: #b4872d;
+}
+
+/* Seção de escolha inicial */
+.selection-section {
+  text-align: center;
+}
+.selection-options {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+/* Cartões de seleção mais destacados */
+.selection-card {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 14px;
+  padding: 18px 10px;
+  width: 180px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(.4,2,.6,1);
+  box-shadow: 0 1.5px 8px rgba(23,73,93,0.04);
+  position: relative;
+}
+.selection-card:hover, .selection-card.selected {
+  border-color: #b4872d;
+  background: #fffbe9;
+  box-shadow: 0 6px 18px rgba(180,135,45,0.10);
+  transform: translateY(-2px) scale(1.04);
+}
+.selection-card h4 {
+  font-size: 16px;
+  color: #17495d;
+  margin: 0;
   font-weight: 600;
+}
+.selection-card label i {
+  font-size: 28px;
+  color: #b4872d;
+  margin-right: 8px;
+}
+.selection-card input:checked + label {
+  color: #b4872d;
+}
+.selection-card input:checked + label i {
+  color: #b4872d;
 }
 
 /* Responsividade */
 @media (max-width: 991px) {
+  .container {
+    max-width: 98vw;
+  }
   .cadastro-wrapper {
     flex-direction: column;
-    max-width: 520px;
-    margin: 20px auto;
+    min-height: 0;
+    border-radius: 18px;
   }
-
   .cadastro-image {
-    flex: 0 0 250px;
-    max-width: 100%;
-    height: 250px;
-  }
-
-  .cadastro-container {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-
-  .selection-options {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .selection-card {
+    flex: 0 0 180px;
+    min-height: 320px;
+    max-height: 420px;
     width: 100%;
-    max-width: 300px;
+    border-radius: 18px 18px 0 0;
+  }
+  .cadastro-image img {
+    border-radius: 18px 18px 0 0;
+    min-height: 320px;
+    max-height: 420px;
+  }
+  .cadastro-container {
+    flex: 1 1 100%;
+    padding: 24px 8px;
+  }
+  .cadastro-box {
+    max-width: 98vw;
+    border-radius: 12px;
+    padding: 18px 6px 12px 6px;
+  }
+  .selection-card {
+    width: 98vw;
+    max-width: 320px;
+    margin: 0 auto 10px auto;
+  }
+  .form-group input, .input-group input {
+    font-size: 15px;
+    padding: 14px 12px 14px 38px;
+  }
+  .btn-cadastro {
+    font-size: 16px;
+    padding: 12px 0;
+    border-radius: 14px;
+  }
+}
+@media (max-width: 576px) {
+  .cadastro-section {
+    min-height: 100vh;
+    padding: 0;
+  }
+  .cadastro-wrapper {
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .cadastro-image {
+    display: none;
+  }
+  .cadastro-container {
+    padding: 18px 2px;
+  }
+  .cadastro-box {
+    max-width: 100vw;
+    border-radius: 0;
+    padding: 10px 2px 6px 2px;
+  }
+  .form-group input, .input-group input {
+    font-size: 14px;
+    padding: 12px 8px 12px 32px;
+  }
+  .btn-cadastro {
+    font-size: 15px;
+    padding: 10px 0;
+    border-radius: 10px;
   }
 }
 
-@media (max-width: 576px) {
-  .cadastro-section {
-    padding: 20px;
-  }
+/* Inputs do formulário de cadastro - visual limpo e profissional */
+.cadastro-form .form-group {
+  margin-bottom: 18px;
+}
+.cadastro-form .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #17495d;
+  font-size: 15px;
+  font-weight: 600;
+}
+.cadastro-form input[type="text"],
+.cadastro-form input[type="email"],
+.cadastro-form input[type="tel"],
+.cadastro-form input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1.5px solid #e9ecef;
+  border-radius: 10px;
+  background: #fff;
+  color: #17495d;
+  box-shadow: 0 1.5px 8px rgba(23,73,93,0.04);
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.cadastro-form input[type="text"]:focus,
+.cadastro-form input[type="email"]:focus,
+.cadastro-form input[type="tel"]:focus,
+.cadastro-form input[type="password"]:focus {
+  border: 1.5px solid #b4872d;
+  box-shadow: 0 0 0 2px #f7ecd1;
+  background: #fff;
+}
+.cadastro-form input::placeholder {
+  color: #b4872d;
+  opacity: 0.7;
+  font-size: 14px;
+}
 
-  .cadastro-image {
-    height: 200px;
-  }
+/* Botão do formulário de cadastro */
+.btn-cadastro {
+  width: 100%;
+  padding: 12px 0;
+  background: #b4872d;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(180,135,45,0.10);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  margin-top: 8px;
+}
+.btn-cadastro:hover {
+  background: #a0761f;
+  box-shadow: 0 6px 16px rgba(180,135,45,0.18);
+  transform: translateY(-2px) scale(1.02);
+}
 
-  .cadastro-container {
-    padding: 30px 20px;
-  }
-
-  .cadastro-box h2 {
-    font-size: 28px;
-  }
-
-  .selection-card {
-    max-width: 100%;
-  }
+.form-termos {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.termos-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #17495d;
+  font-weight: 500;
+}
+.termos-label input[type="checkbox"] {
+  accent-color: #b4872d;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+.termos-label a {
+  color: #b4872d;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.termos-label a:hover {
+  color: #a0761f;
 }

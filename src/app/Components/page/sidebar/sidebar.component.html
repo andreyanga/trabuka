@@ -1,10 +1,11 @@
 <!-- sidebar de outros tipos de acessos estudante-->
-<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="tipoAcesso === 'estudante'">
+<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="user && user.tipoUsuario === 0">
   <div class="sidebar-header">
     <div class="d-flex align-items-center justify-content-center">
       <img src="../../../../assets/img/logo-trabuka.png" alt="Trabuka Logo" class="logo-img">
     </div>
     <p class="sidebar-subtitle">Painel do Estudante</p>
+    <p class="sidebar-user-name">{{ nomeUsuario }}</p>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">
@@ -13,13 +14,13 @@
         <i class="bi bi-chevron-down toggle-icon"></i>
       </button>
       <div class="collapse show" id="perfil-collapse">
-        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+        <a class="nav-link" routerLink="dashboard" routerLinkActive="active">
           <i class="bi bi-grid"></i> Dashboard
         </a>
-        <a class="nav-link" routerLink="/meu-perfil" routerLinkActive="active">
+        <a class="nav-link" routerLink="meu-perfil" routerLinkActive="active">
           <i class="bi bi-person"></i> Meu Perfil
         </a>
-        <a class="nav-link" routerLink="/portfolio" routerLinkActive="active">
+        <a class="nav-link" routerLink="portfolio" routerLinkActive="active">
           <i class="bi bi-collection"></i> Portfólio
         </a>
       </div>
@@ -30,10 +31,10 @@
         <i class="bi bi-chevron-down toggle-icon"></i>
       </button>
       <div class="collapse show" id="oportunidades-collapse">
-        <a class="nav-link" routerLink="/vagas" routerLinkActive="active">
+        <a class="nav-link" routerLink="vagas" routerLinkActive="active">
           <i class="bi bi-briefcase-fill"></i> Vagas
         </a>
-        <a class="nav-link" routerLink="/projetos" routerLinkActive="active">
+        <a class="nav-link" routerLink="meus-projetos" routerLinkActive="active">
           <i class="bi bi-lightbulb"></i> Meus Projetos
         </a>
       </div>
@@ -44,28 +45,28 @@
         <i class="bi bi-chevron-down toggle-icon"></i>
       </button>
       <div class="collapse show" id="ferramentas-collapse">
-        <a class="nav-link" routerLink="/testes-habilidades" routerLinkActive="active">
+        <a class="nav-link" routerLink="testes-habilidades" routerLinkActive="active">
           <i class="bi bi-graph-up"></i> Testes de Habilidades
         </a>
-        <a class="nav-link" routerLink="/ganhos" routerLinkActive="active">
+        <a class="nav-link" routerLink="ganhos" routerLinkActive="active">
           <i class="bi bi-wallet2"></i> Ganhos
         </a>
-        <a class="nav-link" routerLink="/notificacoes" routerLinkActive="active">
+        <a class="nav-link" href="#" (click)="$event.preventDefault()">
           <i class="bi bi-bell"></i> Notificações
         </a>
-        <a class="nav-link" routerLink="/mensagens" routerLinkActive="active">
+        <a class="nav-link" href="#" (click)="$event.preventDefault()">
           <i class="bi bi-chat"></i> Mensagens
         </a>
-        <a class="nav-link" routerLink="/forum" routerLinkActive="active">
+        <a class="nav-link" routerLink="forum" routerLinkActive="active">
           <i class="bi bi-chat-square-text"></i> Fórum
         </a>
-        <a class="nav-link" routerLink="/configuracoes" routerLinkActive="active">
+        <a class="nav-link" routerLink="configuracoes" routerLinkActive="active">
           <i class="bi bi-gear"></i> Configurações
         </a>
       </div>
     </div>
     <div class="nav-section">
-      <a class="nav-link nav-link-logout" routerLink="/logout">
+      <a class="nav-link nav-link-logout" (click)="logout()">
         <i class="bi bi-box-arrow-left text-danger"></i> Sair
       </a>
     </div>
@@ -77,34 +78,26 @@
 
 <!-- sidebar de outros tipos de acessos empresa-->
 
-<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="tipoAcesso === 'empresa'">
+<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="user && user.tipoUsuario === 1">
  <div class="sidebar-header">
       <div class="d-flex align-items-center justify-content-center">
           <img src="../../../../assets/img/logo-trabuka.png" alt="Trabuka Logo" class="logo-img">
       </div>
-      <p class="sidebar-subtitle">Suporte Técnico</p>
+      <p class="sidebar-subtitle">Painel da Empresa</p>
+      <p class="sidebar-user-name">{{ nomeUsuario }}</p>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section">
-        <button class="nav-section-toggle" data-bs-toggle="collapse" data-bs-target="#suporte-collapse">
-          <i class="bi bi-headset me-2"></i> Suporte
+        <button class="nav-section-toggle" data-bs-toggle="collapse" data-bs-target="#empresa-collapse">
+          <i class="bi bi-briefcase me-2"></i> Projetos
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
-        <div class="collapse show" id="suporte-collapse">
-          <a class="nav-link active" href="#support-dashboard">
-            <i class="bi bi-grid"></i> Painel de Suporte
+        <div class="collapse show" id="empresa-collapse">
+          <a class="nav-link" routerLink="dashboard" routerLinkActive="active">
+            <i class="bi bi-grid"></i> Dashboard
           </a>
-          <a class="nav-link" href="#tickets">
-            <i class="bi bi-ticket"></i> Tickets de Suporte
-          </a>
-          <a class="nav-link" href="#knowledge-base">
-            <i class="bi bi-book"></i> Base de Conhecimento
-          </a>
-          <a class="nav-link" href="#reports">
-            <i class="bi bi-bar-chart"></i> Relatórios de Suporte
-          </a>
-          <a class="nav-link" href="#user-feedback">
-            <i class="bi bi-chat-left-text"></i> Feedback de Usuários
+          <a class="nav-link" routerLink="meus-projetos" routerLinkActive="active">
+            <i class="bi bi-briefcase-fill"></i> Meus Projetos
           </a>
         </div>
       </div>
@@ -114,16 +107,16 @@
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
         <div class="collapse show" id="ferramentas-collapse">
-          <a class="nav-link" href="#forum">
+          <a class="nav-link" routerLink="forum" routerLinkActive="active">
             <i class="bi bi-chat-square-text"></i> Fórum
           </a>
-          <a class="nav-link" href="#settings-support">
+          <a class="nav-link" routerLink="configuracoes" routerLinkActive="active">
             <i class="bi bi-gear"></i> Configurações
           </a>
         </div>
       </div>
       <div class="nav-section">
-        <a class="nav-link nav-link-logout" href="#logout">
+        <a class="nav-link nav-link-logout" (click)="logout()">
           <i class="bi bi-box-arrow-left text-danger"></i> Sair
         </a>
       </div>
@@ -135,7 +128,7 @@
 
 <!-- sidebar de outros tipos de acessos administrador-->
 
-<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="tipoAcesso === 'administrador'">
+<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="user && user.tipoUsuario === 2">
 <div class="sidebar-header">
       <div class="d-flex align-items-center justify-content-center">
         <img src="../../../../assets/img/logo-trabuka.png" alt="Trabuka Logo" class="logo-img">
@@ -149,16 +142,16 @@
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
         <div class="collapse show" id="gestao-collapse">
-          <a class="nav-link" href="#dashboard-admin">
+          <a class="nav-link" routerLink="dashboard" routerLinkActive="active">
             <i class="bi bi-grid"></i> Dashboard
           </a>
-          <a class="nav-link" href="#user-management">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-people"></i> Usuários
           </a>
-          <a class="nav-link" href="#company-management">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-building"></i> Empresas
           </a>
-          <a class="nav-link active" href="#admin-functionalities">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-gear-wide-connected"></i> Admin Funcionalidades
           </a>
         </div>
@@ -169,19 +162,19 @@
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
         <div class="collapse show" id="ferramentas-collapse">
-          <a class="nav-link" href="#reports">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-bar-chart"></i> Relatórios
           </a>
-          <a class="nav-link" href="#forum">
+          <a class="nav-link" routerLink="forum" routerLinkActive="active">
             <i class="bi bi-chat-square-text"></i> Fórum
           </a>
-          <a class="nav-link" href="#settings">
+          <a class="nav-link" routerLink="configuracoes" routerLinkActive="active">
             <i class="bi bi-gear"></i> Configurações
           </a>
         </div>
       </div>
       <div class="nav-section">
-        <a class="nav-link nav-link-logout" href="#logout">
+        <a class="nav-link nav-link-logout" (click)="logout()">
           <i class="bi bi-box-arrow-left text-danger"></i> Sair
         </a>
       </div>
@@ -193,12 +186,13 @@
 
 <!-- sidebar de outros tipos de acessos gestor-->
 
-<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="tipoAcesso === 'gestor'">
+<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="user && user.tipoUsuario === 2">
    <div class="sidebar-header">
       <div class="d-flex align-items-center justify-content-center">
         <img src="../../../../assets/img/logo-trabuka.png" alt="Trabuka Logo" class="logo-img">
       </div>
       <p class="sidebar-subtitle">Painel de Gerenciamento</p>
+      <p class="sidebar-user-name">{{ nomeUsuario }}</p>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section">
@@ -207,22 +201,22 @@
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
         <div class="collapse show" id="gestao-collapse">
-          <a class="nav-link active" href="#dashboard-admin">
+          <a class="nav-link" routerLink="dashboard" routerLinkActive="active">
             <i class="bi bi-grid"></i> Dashboard
           </a>
-          <a class="nav-link" href="#user-management">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-people"></i> Gestão de Usuários
           </a>
-          <a class="nav-link" href="#test-management">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-question-circle"></i> Gestão de Testes
           </a>
-          <a class="nav-link" href="#project-management">
+          <a class="nav-link" routerLink="meus-projetos" routerLinkActive="active">
             <i class="bi bi-briefcase"></i> Gestão de Projetos
           </a>
-          <a class="nav-link" href="#payment-management">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-currency-dollar"></i> Gestão de Pagamentos
           </a>
-          <a class="nav-link" href="#internal-reports">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-bar-chart"></i> Relatórios Internos
           </a>
         </div>
@@ -233,16 +227,16 @@
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
         <div class="collapse show" id="ferramentas-collapse">
-          <a class="nav-link" href="#forum">
+          <a class="nav-link" routerLink="forum" routerLinkActive="active">
             <i class="bi bi-chat-square-text"></i> Fórum
           </a>
-          <a class="nav-link" href="#platform-settings">
+          <a class="nav-link" routerLink="configuracoes" routerLinkActive="active">
             <i class="bi bi-gear"></i> Configurações
           </a>
         </div>
       </div>
       <div class="nav-section">
-        <a class="nav-link nav-link-logout" href="#logout">
+        <a class="nav-link nav-link-logout" (click)="logout()">
           <i class="bi bi-box-arrow-left text-danger"></i> Sair
         </a>
       </div>
@@ -252,14 +246,15 @@
     </button>
 </aside>
 
-<!-- sidebar de outros tipos de acessos agente_suporte-->
+<!-- sidebar de outros tipos de acessos suporte-->
 
-<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="tipoAcesso === 'agente_suporte'">
+<aside class="sidebar" id="sidebar" [ngClass]="{'active': isSidebarActive}"  *ngIf="user && user.tipoUsuario === 3">
    <div class="sidebar-header">
       <div class="d-flex align-items-center justify-content-center">
         <img src="../../../../assets/img/logo-trabuka.png" alt="Trabuka Logo" class="logo-img">
       </div>
       <p class="sidebar-subtitle">Suporte Técnico</p>
+      <p class="sidebar-user-name">{{ nomeUsuario }}</p>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section">
@@ -268,19 +263,19 @@
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
         <div class="collapse show" id="suporte-collapse">
-          <a class="nav-link active" href="#support-dashboard">
+          <a class="nav-link" routerLink="dashboard" routerLinkActive="active">
             <i class="bi bi-grid"></i> Painel de Suporte
           </a>
-          <a class="nav-link" href="#tickets">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-ticket"></i> Tickets de Suporte
           </a>
-          <a class="nav-link" href="#knowledge-base">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-book"></i> Base de Conhecimento
           </a>
-          <a class="nav-link" href="#reports">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-bar-chart"></i> Relatórios de Suporte
           </a>
-          <a class="nav-link" href="#user-feedback">
+          <a class="nav-link" href="#" (click)="$event.preventDefault()">
             <i class="bi bi-chat-left-text"></i> Feedback de Usuários
           </a>
         </div>
@@ -291,16 +286,16 @@
           <i class="bi bi-chevron-down toggle-icon"></i>
         </button>
         <div class="collapse show" id="ferramentas-collapse">
-          <a class="nav-link" href="#forum">
+          <a class="nav-link" routerLink="forum" routerLinkActive="active">
             <i class="bi bi-chat-square-text"></i> Fórum
           </a>
-          <a class="nav-link" href="#settings-support">
+          <a class="nav-link" routerLink="configuracoes" routerLinkActive="active">
             <i class="bi bi-gear"></i> Configurações
           </a>
         </div>
       </div>
       <div class="nav-section">
-        <a class="nav-link nav-link-logout" href="#logout">
+        <a class="nav-link nav-link-logout" (click)="logout()">
           <i class="bi bi-box-arrow-left text-danger"></i> Sair
         </a>
       </div>

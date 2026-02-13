@@ -1,0 +1,57 @@
+@TrabukaApi_HostAddress = http://localhost:5006
+
+### Teste básico da API
+GET {{TrabukaApi_HostAddress}}/api/teste
+
+### Teste com parâmetro
+GET {{TrabukaApi_HostAddress}}/api/teste/João
+
+### Informações do sistema
+GET {{TrabukaApi_HostAddress}}/api/teste/info
+
+### Usuários
+GET {{TrabukaApi_HostAddress}}/api/usuarios
+GET {{TrabukaApi_HostAddress}}/api/usuarios/1
+GET {{TrabukaApi_HostAddress}}/api/usuarios/tipo/Estudante
+GET {{TrabukaApi_HostAddress}}/api/usuarios/status/Ativo
+
+### Empresas
+GET {{TrabukaApi_HostAddress}}/api/empresas
+GET {{TrabukaApi_HostAddress}}/api/empresas/1
+GET {{TrabukaApi_HostAddress}}/api/empresas/setor/Tecnologia
+GET {{TrabukaApi_HostAddress}}/api/empresas/status/Ativa
+GET {{TrabukaApi_HostAddress}}/api/empresas/localizacao/Luanda
+
+### Projetos
+GET {{TrabukaApi_HostAddress}}/api/projetos
+GET {{TrabukaApi_HostAddress}}/api/projetos/1
+GET {{TrabukaApi_HostAddress}}/api/projetos/empresa/1
+GET {{TrabukaApi_HostAddress}}/api/projetos/status/Ativo
+GET {{TrabukaApi_HostAddress}}/api/projetos/tipo/Estagio
+GET {{TrabukaApi_HostAddress}}/api/projetos/localizacao/Luanda
+GET {{TrabukaApi_HostAddress}}/api/projetos/salario/1000/5000
+
+### Pagamentos
+GET {{TrabukaApi_HostAddress}}/api/pagamentos
+GET {{TrabukaApi_HostAddress}}/api/pagamentos/1
+GET {{TrabukaApi_HostAddress}}/api/pagamentos/usuario/1
+GET {{TrabukaApi_HostAddress}}/api/pagamentos/empresa/1
+GET {{TrabukaApi_HostAddress}}/api/pagamentos/status/Pendente
+GET {{TrabukaApi_HostAddress}}/api/pagamentos/tipo/Salario
+GET {{TrabukaApi_HostAddress}}/api/pagamentos/periodo/2024-01-01/2024-12-31
+
+### Tickets
+GET {{TrabukaApi_HostAddress}}/api/tickets
+GET {{TrabukaApi_HostAddress}}/api/tickets/1
+GET {{TrabukaApi_HostAddress}}/api/tickets/usuario/1
+GET {{TrabukaApi_HostAddress}}/api/tickets/status/Aberto
+GET {{TrabukaApi_HostAddress}}/api/tickets/categoria/Suporte
+GET {{TrabukaApi_HostAddress}}/api/tickets/prioridade/Alta
+
+### Portfolios
+GET {{TrabukaApi_HostAddress}}/api/portfolios
+GET {{TrabukaApi_HostAddress}}/api/portfolios/1
+GET {{TrabukaApi_HostAddress}}/api/portfolios/usuario/1
+GET {{TrabukaApi_HostAddress}}/api/portfolios/categoria/Web
+GET {{TrabukaApi_HostAddress}}/api/portfolios/status/Ativo
+GET {{TrabukaApi_HostAddress}}/api/portfolios/tecnologia/CSharp
